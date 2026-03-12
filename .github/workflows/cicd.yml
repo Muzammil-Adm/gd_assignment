@@ -1,4 +1,4 @@
-name: CI - Validate K8s + Terraform
+name: CI - K8s + Terraform Validation
 on:
   push:
     branches: [ main ]
@@ -9,27 +9,28 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4 [web:1]
+    - name: Checkout code
+      uses: actions/checkout@v4  # Fixed: no citation
 
     - name: Install kubeval
       run: |
         curl -sSLO "https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz"
         tar xzf kubeval-linux-amd64.tar.gz
-        sudo mv kubeval /usr/local/bin/ [web:1]
+        sudo mv kubeval /usr/local/bin/
 
     - name: Validate K8s manifests
       run: |
-        find k8s-specifications -name "*.yaml" -exec kubeval {} \; [web:1]
+        find k8s-specifications -name "*.yaml" -exec kubeval {} \;
 
-    - name: Terraform validate
+    - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.9.5
-    - run: |
-        cd terraform/aws-eks
-        terraform init -backend=false
-        terraform validate [web:1]
 
-    - name: Check .gitignore
+    - name: Terraform validate
       run: |
-        grep -q "\.terraform" .gitignore || echo ".terraform/ missing from gitignore"
+        cd terraform/aws-eks || echo "Terraform dir missing"
+        terraform init -backend=false
+        terraform fmt -check
+        terraform validate
+
