@@ -1,0 +1,10 @@
+version: '3.8'  # Ignore obsolete warning
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4570:4566"
+    environment:
+      - SERVICES=s3,eks,rds,elasticache,ec2,iam
+      - DEBUG=1
+
