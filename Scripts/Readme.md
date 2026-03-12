@@ -5,7 +5,7 @@ Deploy the Docker [example-voting-app](https://github.com/dockersamples/example-
 ## 🎯 Demo URLs (after setup)
 ```
 Vote App:     http://localhost:8080
-Results App:  http://<GCP-VM-IP>:31000
+Results App:  http://<VM-IP>:8081
 ```
 
 ## 📋 Prerequisites
@@ -49,7 +49,7 @@ kubectl get svc vote result  # Note NodePorts (31000, etc.)
 **Browser**:
 ```
 Local:    http://localhost:8080 (vote), http://localhost:8081 (results)
-External: http://<GCP-IP>:31000 (vote)
+External: http://<GCP-IP>:8080 (vote)
 ```
 
 ## ✅ Verify deployment
